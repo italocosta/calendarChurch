@@ -16,6 +16,8 @@
  */
 package br.com.getset.calendarchurch.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -27,34 +29,50 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class Resources {
-	
-	private static EntityManagerFactory emf = Persistence
-			.createEntityManagerFactory("calendarChurch");
+	private static Map<String, Object> configOverrides = new HashMap<String, Object>();
+	static {
+		Map<String, String> env = System.getenv();
+		for (String envName : env.keySet()) {
+		    if (envName.contains("STR_CONEXAO_JDBC")) {
+		        configOverrides.put("javax.persistence.jdbc.url", env.get(envName));    
+		    }
+		    if (envName.contains("USER_BD")) {
+		    	configOverrides.put("javax.persistence.jdbc.user", env.get(envName));    
+		    }
+		    if (envName.contains("PASS_BD")) {
+		    	configOverrides.put("javax.persistence.jdbc.password", env.get(envName));    
+		    }
+		}
+
+	}
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("calendarChurch",configOverrides);
+
 	@Produces
 	@RequestScoped
 	public static EntityManager getEntityManager() {
 		return emf.createEntityManager();
 	}
-	
+
 	public void close(@Disposes EntityManager em) {
 		em.close();
 	}
-	
-    /*
+
+	/*
+	 * @Produces
+	 * 
+	 * @PersistenceContext(name = "calendarChurch") private EntityManager em;
+	 */
+
 	@Produces
-    @PersistenceContext(name = "calendarChurch")
-    private EntityManager em;
-	*/
+	public Logger produceLog(InjectionPoint injectionPoint) {
+		return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+	}
 
-    @Produces
-    public Logger produceLog(InjectionPoint injectionPoint) {
-        return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
-    }
-
-    /*@Produces
-    @RequestScoped
-    public FacesContext produceFacesContext() {
-        return FacesContext.getCurrentInstance();
-    }*/
+	/*
+	 * @Produces
+	 * 
+	 * @RequestScoped public FacesContext produceFacesContext() { return
+	 * FacesContext.getCurrentInstance(); }
+	 */
 
 }

@@ -11,9 +11,9 @@
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/gofree_churchcalendar" />
-			<property name="javax.persistence.jdbc.user" value="gofree_church" />
-			<property name="javax.persistence.jdbc.password" value="NVpQ9hwHa_#3" />
+				value="var.jdbc" />
+			<property name="javax.persistence.jdbc.user" value="var.user" />
+			<property name="javax.persistence.jdbc.password" value="var.pass" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.enable_lazy_load_no_trans" value="true" />
