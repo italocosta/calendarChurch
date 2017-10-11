@@ -1,0 +1,266 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/templates/default/template.xhtml">
+	<ui:define name="content-main">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				Cadastros <small>Contrato</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-home"></i>
+						Cadastros</a></li>
+				<li class="active">Contrato</li>
+			</ol>
+		</section>
+		<!-- Main content -->
+		<section class="content">
+				<h:form prependId="false" id="formGeral">
+					<div class="row">
+						<div class="col-xs-12">
+							<h:panelGroup layout="block"
+								styleClass="box pre-scrollable no-padding">
+								<h:dataTable var="contrato" id="tableContrato"
+									styleClass="table table-hover table-condensed "
+									value="#{contratoMB.listContrato}">
+
+									<h:column>
+										<f:facet name="header">#</f:facet>
+										<h:outputText value="#{contrato.cdContrato}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">Operadora</f:facet>
+										<h:outputText value="#{contrato.dsOperadora}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">Data Início</f:facet>
+										<h:outputText value="#{contrato.dtInicio}" converter="myDateTimeConverterBrasil"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">Data Término</f:facet>
+										<h:outputText value="#{contrato.dtTermino}" converter="myDateTimeConverterBrasil"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header"></f:facet>
+										<h:commandLink id="btVer"
+											onclick="$('#edita-contrato').modal('show');"
+											immediate="true" styleClass="btn btn-app btn-app-table">
+											<i class="fa fa-list-alt"></i>
+											<f:ajax execute="@this" render=":formDialog" />
+											<f:setPropertyActionListener value="#{contrato}"
+												target="#{contratoMB.contratoSelect}" />
+										</h:commandLink>
+									</h:column>
+									<h:column>
+										<f:facet name="header"></f:facet>
+										<h:commandLink id="btDel"
+											onclick="$('#exclui-contrato').modal('show');"
+											immediate="true" styleClass="btn btn-app btn-app-table">
+											<i class="fa fa-trash-o"></i>
+											<f:ajax execute="@this" render=":formDialogExclui" />
+											<f:setPropertyActionListener value="#{contrato}"
+												target="#{contratoMB.contratoSelect}" />
+										</h:commandLink>
+									</h:column>
+
+								</h:dataTable>
+							</h:panelGroup>
+							<!-- /.box -->
+						</div>
+					</div>
+					<h:commandLink id="btNovo"
+						actionListener="#{contratoMB.preparaNovoContrato()}"
+						onclick="$('#novo-contrato').modal('show');" immediate="true"
+						styleClass="btn btn-primary" value="Novo Contrato">
+						<f:ajax execute="@this" render=":formDialogNovo" />
+					</h:commandLink>
+				</h:form>
+		</section>
+		<!-- modals -->
+		<div class="modal fade" id="exclui-contrato" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 260px; top: 120px;">
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogExclui">
+					<p:messages autoUpdate="true" showDetail="true"/>
+						<div class="modal-body">Deseja realmente excluir o contrato ?</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{contratoMB.excluiContrato()}"
+								styleClass="btn btn-primary btn-ok" pt:data-dismiss="modal"
+								value="Excluir">
+								<f:ajax execute="@form" render=":formGeral:tableContrato" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="edita-contrato" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialog">
+						<div class="modal-header">
+							<label>Editar Contrato</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="operadoraEdit">Operadora:</label>
+									<h:inputText styleClass="form-control texto" id="operadoraEdit"
+										pt:type="text" pt:placeholder="Operadora" pt:required="required"
+										value="#{contratoMB.contratoSelect.dsOperadora}" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="descricaoEdit">Descrição:</label>
+									<h:inputTextarea 
+										id="descricaoEdit"
+										styleClass="form-control textoarea" pt:type="text"
+										pt:placeholder="Descrição" value="#{contratoMB.contratoSelect.dsDescricao}" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="vlVc1Edit">Valor VC1:</label>
+									<h:inputText id="vlVc1Edit"
+										styleClass="form-control vlmin" pt:type="text"
+										pt:placeholder="Valor VC1" pt:required="required"
+										value="#{contratoMB.contratoSelect.vlMinVc1}" converter="javax.faces.Double"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="vlVc23Edit">Valor VC2 VC3:</label>
+									<h:inputText id="vlVc23Edit"
+										styleClass="form-control vlmin" pt:type="text"
+										pt:placeholder="Valor VC2 VC3" pt:required="required"
+										value="#{contratoMB.contratoSelect.vlMinVc23}" converter="javax.faces.Double"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="vlLdFxEdit">Valor LD Fixo:</label>
+									<h:inputText id="vlLdFxEdit"
+										styleClass="form-control vlmin" pt:type="text"
+										pt:placeholder="Valor LD Fixo" pt:required="required"
+										value="#{contratoMB.contratoSelect.vlMinVc1}" converter="javax.faces.Double"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="dtIniEdit">Data início:</label>
+									<p:inputText id="dtIniEdit" styleClass="form-control"  pt:type="date"
+											placeholder="Data de início" pt:required="required"
+											value="#{contratoMB.contratoSelect.dtInicio}" converter="myDateTimeConverter"
+											converterMessage="A data início deve seguir o padão mm/dd/yyyy"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="dtFimEdit">Data término:</label>
+									<p:inputText id="dtFimEdit" styleClass="form-control" pt:type="date"
+											placeholder="Data de término" pt:required="required"
+											value="#{contratoMB.contratoSelect.dtTermino}" converter="myDateTimeConverter"
+											converterMessage="A data término deve seguir o padão mm/dd/yyyy"/>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{contratoMB.atualizaContrato()}"
+								styleClass="btn btn-primary btn-ok"
+								value="Salvar">
+							</h:commandButton>
+						</div>
+						<h:outputScript name="js/mascaras.js"/>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="novo-contrato" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogNovo">
+						<div class="modal-header">
+							<label>Novo Contrato</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="operadoraNovo">Operadora:</label>
+									<h:inputText 
+										id="operadoraNovo" pt:required="required"
+										styleClass="form-control texto" pt:type="text"
+										pt:placeholder="Operadora" value="#{contratoMB.newContrato.dsOperadora}" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="descricaoNovo">Descrição:</label>
+									<h:inputTextarea pt:data-inputmask-regex="[a-za-zA-Z0-9!#$%'*+/=?^_`{|}~-]"
+										id="descricaoNovo"
+										styleClass="form-control textoarea" pt:type="text"
+										pt:placeholder="Descrição" value="#{contratoMB.newContrato.dsDescricao}" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="vlVc1Novo">Valor VC1:</label>
+									<h:inputText id="vlVc1Novo"
+										styleClass="form-control vlmin"
+										pt:placeholder="Valor VC1" pt:required="required"
+										value="#{contratoMB.newContrato.vlMinVc1}" converter="javax.faces.Double"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="vlVc23Novo">Valor VC2 VC3:</label>
+									<h:inputText id="vlVc23Novo"
+										styleClass="form-control vlmin"
+										pt:placeholder="Valor VC2 VC3" pt:required="required"
+										value="#{contratoMB.newContrato.vlMinVc23}" converter="javax.faces.Double"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="vlLdFx">Valor LD Fixo:</label>
+									<h:inputText id="vlLdFx"
+										styleClass="form-control vlmin"
+										pt:placeholder="Valor LD Fixo" pt:required="required"
+										value="#{contratoMB.newContrato.vlMinVc1}" converter="javax.faces.Double"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="dtIni">Data início:</label>
+									<p:inputText id="dtIni" styleClass="form-control"  pt:type="date"
+											placeholder="Data de início" pt:required="required"
+											value="#{contratoMB.newContrato.dtInicio}" converter="myDateTimeConverter"
+											converterMessage="A data início deve seguir o padão mm/dd/yyyy"/>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="dtFim">Data término:</label>
+									<p:inputText id="dtFim" styleClass="form-control" pt:type="date"
+											placeholder="Data de término" pt:required="required"
+											value="#{contratoMB.newContrato.dtTermino}" converter="myDateTimeConverter"
+											converterMessage="A data término deve seguir o padão mm/dd/yyyy"/>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{contratoMB.inseriContrato()}"
+								styleClass="btn btn-primary btn-ok" value="Salvar"> 
+							</h:commandButton>
+						</div>
+						<h:outputScript name="js/mascaras.js"/>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

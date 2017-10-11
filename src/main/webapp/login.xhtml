@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon-calendar.ico']}"/>
+	<title>Calendário de eventos</title>
+
+	<!-- Bootstrap 3.3.5 -->
+	<h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+
+	<!-- Font Awesome -->
+	<h:outputStylesheet name="css/font-awesome.css" />
+
+	<!-- Ionicons -->
+	<h:outputStylesheet name="css/ionicons.css" />
+
+	<!-- Theme style -->
+	<h:outputStylesheet name="css/AdminLTE.css" />
+
+	<!-- iCheck -->
+	<h:outputStylesheet name="plugins/iCheck/flat/blue.css" />
+	
+	<!-- jQuery -->
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<!-- Bootstrap JS -->
+	<h:outputScript name="bootstrap/js/bootstrap.js" />
+	<!-- iCheck -->
+	<h:outputScript name="plugins/iCheck/icheck.min.js"/>
+	<script>
+      $(function () {
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-green',
+          radioClass: 'iradio_square-green',
+          increaseArea: '20%' // optional
+        });
+      });
+    </script>
+    
+    <!-- Custom style -->
+	<h:outputStylesheet name="css/custom.css" />
+
+</h:head>
+<h:body class="hold-transition login-page">
+	<div class="login-box">
+		<!-- /.login-logo -->
+		<div class="login-logo login-logo-custom">
+			<a href="#">
+				<div>
+					<h:graphicImage library="img" name="logo-web.png" alt="Logo"/>
+				</div>
+			</a>
+		</div>
+		<div class="login-box-body">
+			<p:growl id="messages" autoUpdate="true" showDetail="true" life="5000"/>
+			<h:form prependId="false">
+				<div class="form-group has-feedback">
+					<div class="input-group">
+						<div class="input-group-addon">
+			            	<i class="fa fa-user"/>
+			            </div>
+						<p:inputText value="#{authenticMB.usuario.dsLogin}" styleClass="form-control" placeholder="Nome" pt:autofocus="true"/>
+					</div>
+				</div>
+				<div class="form-group has-feedback">
+					<div class="input-group">
+						<div class="input-group-addon">
+			            	<i class="fa fa-lock"/>
+			            </div>
+						<p:password styleClass="form-control" value="#{authenticMB.usuario.dsSenha}" placeholder="Password"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 pull-right">
+						<h:commandButton value="Entrar" action="#{authenticMB.login()}"
+							styleClass="btn btn-block  btn-flat btn-custom-color"/>
+					</div>
+					<!-- /.col -->
+				</div>
+			</h:form>
+		</div>
+		<!-- /.login-box-body -->
+	</div>
+	<!-- /.login-box -->
+	</h:body>
+</html>

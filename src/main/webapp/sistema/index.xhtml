@@ -1,0 +1,391 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/templates/default/template.xhtml">
+
+	<ui:define name="content-main">
+		<!-- Content Header (Page header) -->
+		<!-- <section class="content-header">
+			<h1>
+				Home <small>Rateio BFX</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="apartamentos.jsf"><i class="fa fa-home"></i>
+						Home</a></li>
+				<li class="active">Rateio BFX</li>
+			</ol>
+		</section> -->
+		<!-- Main content -->
+		<section class="content">
+			<h:form id="formGeral" prependId="false">
+				<div class="box box-orange">
+					<div class="box-body">
+						<div class="form-group">
+							<div class="col-lg-6">
+								<h:outputLabel for="mes" value="Mês :"
+									styleClass="col-sm-2 control-label" />
+								<div class="col-sm-10 input-group">
+									<div class="input-group-addon iconInput">
+										<i class="fa fa-th"></i>
+									</div>
+									<h:selectOneMenu id="mes" value="#{eventMB.month}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="Janeiro" itemValue="1" />
+										<f:selectItem itemLabel="Fevereiro" itemValue="2" />
+										<f:selectItem itemLabel="Março" itemValue="3" />
+										<f:selectItem itemLabel="Abril" itemValue="4" />
+										<f:selectItem itemLabel="Maio" itemValue="5" />
+										<f:selectItem itemLabel="Junho" itemValue="6" />
+										<f:selectItem itemLabel="Julho" itemValue="7" />
+										<f:selectItem itemLabel="Agosto" itemValue="8" />
+										<f:selectItem itemLabel="Setembro" itemValue="9" />
+										<f:selectItem itemLabel="Outubro" itemValue="10" />
+										<f:selectItem itemLabel="Novembro" itemValue="11" />
+										<f:selectItem itemLabel="Dezembro" itemValue="12" />
+										<f:ajax event="change" render="tabela" execute="@form"
+											listener="#{eventMB.searchEvents()}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<h:outputLabel for="ano" value="Ano :"
+									styleClass="col-sm-2 control-label" />
+								<div class="col-sm-10 input-group">
+									<div class="input-group-addon iconInput">
+										<i class="fa fa-th"></i>
+									</div>
+									<h:selectOneMenu id="ano" value="#{eventMB.year}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="2016" itemValue="2016" />
+										<f:selectItem itemLabel="2017" itemValue="2017" />
+										<f:selectItem itemLabel="2018" itemValue="2018" />
+										<f:ajax event="change" render="tabela" execute="@form"
+											listener="#{eventMB.searchEvents()}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="box-footer">
+						<h:commandButton value="Pesquisar"
+							actionListener="#{eventMB.searchEvents()}"
+							styleClass="btn btn-flat btn-custom-color  pull-right">
+							<f:ajax execute="@form" render="tabela" />
+						</h:commandButton>
+						<h:commandButton value="Novo evento"
+							onclick="$('#novo-evento').modal('show');" immediate="true"
+							actionListener="#{eventMB.preparNewEvent()}"
+							styleClass="btn btn-flat btn-custom-color">
+							<f:ajax execute="@this" render=":formDialogNovo" />
+						</h:commandButton>
+						<h:commandButton value="notificação de amanhã"
+							actionListener="#{eventMB.sendNotificationEventsTomorrow()}"
+							styleClass="btn btn-flat btn-custom-color" style="margin-left: 15px;">
+							<f:ajax execute="@form" />
+						</h:commandButton>
+						<h:commandButton value="notificação de hoje"
+							actionListener="#{eventMB.sendNotificationEventsToday()}"
+							styleClass="btn btn-flat btn-custom-color" style="margin-left: 15px;">
+							<f:ajax execute="@form" />
+						</h:commandButton>
+					</div>
+				</div>
+				<h:panelGroup layout="block" id="tabela"
+					styleClass="box no-padding pre-scrollable">
+					<h:dataTable var="evt" value="#{eventMB.listEvent}"
+						styleClass="table table-hover table-condensed">
+						<h:column>
+							<f:facet name="header">#</f:facet>
+							<h:outputText value="#{evt.idEvent}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Evento</f:facet>
+							<h:outputText value="#{evt.dsEvent}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Data/Hora</f:facet>
+							<h:outputText value="#{evt.dataFormatada}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Obs</f:facet>
+							<h:outputText value="#{evt.dsObsSubstring}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Exibido</f:facet>
+							<h:outputText value="#{evt.flShow ? 'Sim' : 'Não'}" />
+						</h:column>
+						<h:column>
+							<h:commandLink styleClass="btn btn-app btn-app-table"
+								onclick="$('#edita-evento').modal('show');" immediate="true">
+								<i class="fa fa-pencil text-blue" pt:rel="tooltip"
+									title="Editar"></i>
+								<f:ajax execute="@this" render=":formDialogEdita" />
+								<f:setPropertyActionListener value="#{evt}"
+									target="#{eventMB.eventSelect}" />
+							</h:commandLink>
+							<h:commandLink styleClass="btn btn-app btn-app-table"
+								onclick="$('#exclui-evento').modal('show');" immediate="true">
+								<i class="fa fa-trash text-red" pt:rel="tooltip" title="Excluir"></i>
+								<f:ajax execute="@this" render=":formDialogExclui" />
+								<f:setPropertyActionListener value="#{evt}"
+									target="#{eventMB.eventSelect}" />
+								<f:ajax />
+							</h:commandLink>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+			</h:form>
+		</section>
+		<!-- modals -->
+		<div class="modal fade" id="exclui-evento" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 260px; top: 120px;">
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogExclui">
+						<p:messages autoUpdate="true" showDetail="true" />
+						<div class="modal-body">Deseja realmente excluir o evento ?</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-flat btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{eventMB.deleteEvent()}"
+								styleClass="btn btn-flat btn-danger btn-ok"
+								pt:data-dismiss="modal" value="Excluir">
+								<f:ajax execute="@form" render=":formGeral:tabela" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+		<!-- ================================================================= -->
+		<div class="modal fade" id="edita-evento" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogEdita">
+						<p:messages autoUpdate="true" />
+						<div class="modal-header">
+							<label>Editar Evento</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="row">
+										<div class="form-group col-lg-2">
+											<label>Id:</label>
+											<h:inputText styleClass="form-control" disabled="true"
+												id="idEdit" value="#{eventMB.eventSelect.idEvent}">
+											</h:inputText>
+										</div>
+										<div class="form-group col-lg-10">
+											<label for="nomeEdit">Descrição do Evento:</label>
+											<h:inputText styleClass="form-control" id="nomeEdit"
+												pt:placeholder="Evento..."
+												value="#{eventMB.eventSelect.dsEvent}" />
+											<h:message for="nomeEdit" styleClass="messagesJsf" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-lg-12">
+											<label for="obs">Observação:</label>
+											<h:inputTextarea rows="3" styleClass="form-control" id="obs" value="#{eventMB.eventSelect.dsObs}"
+												pt:type="text" pt:placeholder="Coloque aqui informações sobre o evento como: valor, responsável, local..." />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<label>Data/Hora:</label>
+										</div>
+										<div class="form-group col-lg-12">
+											<div class="col-lg-3">
+												<h:outputText for="dtIni" value="Dia do evento"
+													styleClass="control-label" />
+													<p:inputText id="dtIni" styleClass="form-control datePicker"
+														onfocus="callPickerDate();" converter="myDateTimeConverter"
+														value="#{eventMB.eventSelect.dtStart}"
+														converterMessage="A data inicial deve seguir o padão mm/dd/yyyy" />
+												
+											</div>
+											<div class="col-lg-3">
+												<div class="checkbox">
+													<label> 
+													 Dia todo 
+													 	<h:selectBooleanCheckbox value="#{eventMB.eventSelect.flAllDay}" >
+													 		<p:ajax update="hrIni hrFim" listener="#{eventMB.setAllDay('edita')}"/>
+													 	</h:selectBooleanCheckbox>
+													 </label>
+												</div>
+											</div>
+											<div class="col-lg-3 bootstrap-timepicker">
+												<h:outputText for="hrIni" value="Hora inicial"
+													styleClass="control-label" />
+													<p:inputText id="hrIni" styleClass="form-control timepicker"
+														disabled="#{eventMB.eventSelect.flAllDay}"
+														converter="myTimeConverter"
+														converterMessage="A hora inicial deve seguir o padão hh:mm"
+														onfocus="callPickerTime();"
+														value="#{eventMB.eventSelect.hrStart}"/>
+												
+											</div>
+											<div class="col-lg-3 bootstrap-timepicker">
+												<h:outputText for="hrFim" value="Hora final"
+													styleClass="control-label" />
+													<p:inputText id="hrFim" styleClass="form-control timepicker"
+														disabled="#{eventMB.eventSelect.flAllDay}"
+														converter="myTimeConverter"
+														converterMessage="A hora final deve seguir o padão hh:mm"
+														onfocus="callPickerTime();"
+														value="#{eventMB.eventSelect.hrFinish}"/>
+												
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-lg-5">
+											<label>Mostrar evento no aplicativo:</label>
+											<h:selectOneMenu value="#{eventMB.eventSelect.flShow}"
+												styleClass="form-control" converter="javax.faces.Boolean">
+												<f:selectItem itemLabel="Sim" itemValue="true" />
+												<f:selectItem itemLabel="Não" itemValue="false" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-lg-12">
+											<div class="checkbox">
+												<label> 
+												 Disparar notificação para aplicativos ? 
+												 	<h:selectBooleanCheckbox value="#{eventMB.sendNotification}" >
+												 	</h:selectBooleanCheckbox>
+												 </label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer" style="margin-top: 0px">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton styleClass="btn btn-danger btn-ok"
+								pt:data-dismiss="modal"
+								actionListener="#{eventMB.updateEvent()}" value="Salvar">
+								<f:ajax execute="@form" render="@form :formGeral:tabela" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		<!-- ==================================================================================== -->
+		<div class="modal fade" id="novo-evento" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogNovo">
+						<p:messages autoUpdate="true" />
+						<div class="modal-header">
+							<label>Novo Evento</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="row">
+										<div class="form-group col-lg-12">
+											<label for="nomeEdit">Descrição do Evento:</label>
+											<h:inputText styleClass="form-control" id="nomeNovo"
+												pt:placeholder="Evento..."
+												value="#{eventMB.newEvent.dsEvent}" />
+											<h:message for="nomeNovo" styleClass="messagesJsf" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-lg-12">
+											<label for="obsNovo">Observação:</label>
+											<h:inputTextarea rows="3" styleClass="form-control" id="obsNovo" value="#{eventMB.newEvent.dsObs}"
+												pt:type="text" pt:placeholder="Coloque aqui informações sobre o evento como: valor, responsável, local..." />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<label>Data/Hora:</label>
+										</div>
+										<div class="form-group col-lg-12">
+											<div class="col-lg-3">
+												<h:outputText for="dtIniNovo" value="Dia do evento"
+													styleClass="control-label" />
+													<p:inputText id="dtIniNovo" styleClass="form-control datePicker"
+														onfocus="callPickerDate();" converter="myDateTimeConverter"
+														value="#{eventMB.newEvent.dtStart}"
+														converterMessage="A data inicial deve seguir o padão mm/dd/yyyy" />
+												
+											</div>
+											<div class="col-lg-3">
+												<div class="checkbox">
+													<label> 
+													 Dia todo 
+													 	<h:selectBooleanCheckbox value="#{eventMB.newEvent.flAllDay}" >
+													 		<p:ajax update="hrIniNovo hrFimNovo" listener="#{eventMB.setAllDay('novo')}"/>
+													 	</h:selectBooleanCheckbox>
+													 </label>
+												</div>
+											</div>
+											<div class="col-lg-3 bootstrap-timepicker">
+												<h:outputText for="hrIniNovo" value="Hora inicial"
+													styleClass="control-label" />
+													<p:inputText id="hrIniNovo" styleClass="form-control timepicker"
+														disabled="#{eventMB.newEvent.flAllDay}"
+														converter="myTimeConverter"
+														converterMessage="A hora inicial deve seguir o padão hh:mm"
+														onfocus="callPickerTime();"
+														value="#{eventMB.newEvent.hrStart}"/>
+												
+											</div>
+											<div class="col-lg-3 bootstrap-timepicker">
+												<h:outputText for="hrFimNovo" value="Hora final"
+													styleClass="control-label" />
+													<p:inputText id="hrFimNovo" styleClass="form-control timepicker"
+														disabled="#{eventMB.newEvent.flAllDay}"
+														converter="myTimeConverter"
+														converterMessage="A hora final deve seguir o padão hh:mm"
+														onfocus="callPickerTime();"
+														value="#{eventMB.newEvent.hrFinish}"/>
+												
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-lg-5">
+											<label>Mostrar evento no aplicativo:</label>
+											<h:selectOneMenu value="#{eventMB.newEvent.flShow}"
+												styleClass="form-control" converter="javax.faces.Boolean">
+												<f:selectItem itemLabel="Sim" itemValue="true" />
+												<f:selectItem itemLabel="Não" itemValue="false" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton styleClass="btn btn-danger btn-ok"
+								pt:data-dismiss="modal"
+								actionListener="#{eventMB.insertEvent()}" value="Inserir">
+								<f:ajax execute="@form" render="@form :formGeral:tabela" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+    <!-- Left side column. contains the logo and sidebar -->
+		<aside class="main-sidebar"> <!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar"> <!-- Sidebar user panel -->
+		<h:form>
+		<p:remoteCommand name="rcClose" oncomplete="closeDialog()"/>
+		<ul class="sidebar-menu">
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-edit"></i>
+					<span>Cadastros</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="cliente.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Cliente</span>
+						</a>
+					</li>
+					<li>
+						<a href="contrato.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Contrato</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Contas</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Ativos</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Usuários</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Particulares</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Centro de custos</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-line-chart"></i>
+					<span>Relatórios</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Resumido</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Detalhado</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Sintético</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Por E-mail</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-file-pdf-o"></i>
+					<span>Importação</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Importação de fatura</span>
+						</a>
+					</li>
+						
+				</ul>
+			</li>
+		</ul>
+		</h:form>
+		<div class="img-left-menu" style="text-align: center; position: relative; margin-top: 30px;">
+			<h:graphicImage library="img" name="consultoria2.png" alt="Logo"/>
+		</div>
+		</section> <!-- /.sidebar -->
+		</aside>
+		<p:dialog modal="true" widgetVar="loadingDownload" showHeader="false"
+			draggable="false" closable="false" style="text-align: center;" styleClass="dialogsCustom">
+			<img src="#{request.contextPath}/resources/img/ajax-loader.gif" />
+			<br />
+			<br />Efetuando backup...
+		</p:dialog>
+		<h:outputScript>
+			//<![CDATA[
+				function closeDialog(){
+					PF('loadingDownload').hide();
+				}
+			//]]>
+		</h:outputScript>
+</ui:composition>
+

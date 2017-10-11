@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/templates/default/template.xhtml">
+	<ui:define name="content-main">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				Cadastros <small>Cliente</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-home"></i>
+						Cadastros</a></li>
+				<li class="active">Cliente</li>
+			</ol>
+		</section>
+		<!-- Main content -->
+		<section class="content">
+				<h:form prependId="false" id="formGeral">
+					<div class="row">
+						<div class="col-xs-12">
+							<h:panelGroup layout="block"
+								styleClass="box pre-scrollable no-padding">
+								<h:dataTable var="cliente" id="tableCliente"
+									styleClass="table table-hover table-condensed "
+									value="#{clienteMB.listCliente}">
+
+									<h:column>
+										<f:facet name="header">#</f:facet>
+										<h:outputText value="#{cliente.cdCliente}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">Razão</f:facet>
+										<h:outputText value="#{cliente.dsRazao}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">Cnpj</f:facet>
+										<h:outputText styleClass="cnpj" value="#{cliente.nuCnpj}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header"></f:facet>
+										<h:commandLink id="btVer"
+											onclick="$('#edita-cliente').modal('show');"
+											immediate="true" styleClass="btn btn-app btn-app-table">
+											<i class="fa fa-list-alt"></i>
+											<f:ajax execute="@this" render=":formDialog" />
+											<f:setPropertyActionListener value="#{cliente}"
+												target="#{clienteMB.clienteSelect}" />
+										</h:commandLink>
+									</h:column>
+									<h:column>
+										<f:facet name="header"></f:facet>
+										<h:commandLink id="btDel"
+											onclick="$('#exclui-cliente').modal('show');"
+											immediate="true" styleClass="btn btn-app btn-app-table">
+											<i class="fa fa-trash-o"></i>
+											<f:ajax execute="@this" render=":formDialogExclui" />
+											<f:setPropertyActionListener value="#{cliente}"
+												target="#{clienteMB.clienteSelect}" />
+										</h:commandLink>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+							<!-- /.box -->
+						</div>
+					</div>
+					<h:commandLink id="btNovo"
+						actionListener="#{clienteMB.preparaNovoCliente()}"
+						onclick="$('#novo-cliente').modal('show');" immediate="true"
+						styleClass="btn btn-primary" value="Novo Cliente">
+						<f:ajax execute="@this" render=":formDialogNovo" />
+					</h:commandLink>
+				</h:form>
+		</section>
+		<!-- modals -->
+		<div class="modal fade" id="exclui-cliente" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 260px; top: 120px;">
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogExclui">
+					<p:messages autoUpdate="true" showDetail="true"/>
+						<div class="modal-body">Deseja realmente excluir o cliente ?</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{clienteMB.excluiCliente()}"
+								styleClass="btn btn-primary btn-ok" pt:data-dismiss="modal"
+								value="Excluir">
+								<f:ajax execute="@form" render=":formGeral:tableCliente" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="edita-cliente" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialog">
+						<div class="modal-header">
+							<label>Editar Cliente</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="razaoEdit">Razão:</label>
+									<h:inputText styleClass="form-control texto" id="razaoEdit"
+										pt:type="text" pt:placeholder="Razão" pt:required="required"
+										value="#{clienteMB.clienteSelect.dsRazao}"  />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="cnpjEdit">Cnpj:</label>
+									<h:inputText styleClass="form-control cnpj" id="cnpjEdit"
+										pt:type="text" pt:placeholder="Cnpj" pt:required="required"
+										value="#{clienteMB.clienteSelect.nuCnpj}" />
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{clienteMB.atualizaCliente()}"
+								styleClass="btn btn-primary btn-ok"
+								value="Salvar">
+							</h:commandButton>
+						</div>
+						<h:outputScript name="js/mascaras.js"/>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="novo-cliente" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<h:form prependId="false" id="formDialogNovo">
+						<div class="modal-header">
+							<label>Novo Cliente</label>
+						</div>
+						<div class="modal-body">
+							<!-- /.row -->
+							<div class="row">
+								<div class="form-group col-lg-12">
+									<label for="razaoNovo">Razão social:</label>
+									<h:inputText 
+										id="razaoNovo"
+										styleClass="form-control texto" pt:type="text" pt:required="required"
+										pt:placeholder="Nome" value="#{clienteMB.newCliente.dsRazao}" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-4">
+									<label for="cnpjNovo">Cnpj:</label>
+									<h:inputText id="cnpjNovo"
+										styleClass="form-control cnpj" pt:type="text"
+										pt:placeholder="Cnpj" pt:required="required"
+										value="#{clienteMB.newCliente.nuCnpj}" />
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton action="#{clienteMB.inseriCliente()}"
+								styleClass="btn btn-primary btn-ok"
+								value="Salvar">
+							</h:commandButton>
+						</div>
+						<h:outputScript name="js/mascaras.js"/>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		<h:outputScript name="js/mascaras.js"/>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,120 @@
+@CHARSET "ISO-8859-1";
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #f00;
+ }
+ 
+ .sem-menu{
+ 	margin-left: 0px;
+ }
+ .main-header .logo {
+	background-color: #F06718 !important;
+	color: #ffffff;
+	border-bottom: 0 solid transparent;
+ }
+ 
+ .main-header .logo .info{
+ 	left: 45px;
+ }
+ 
+ .box-orange{
+ 	border-top-color: #F6752B;
+ }
+ 
+.skin-blue .main-header .navbar {
+  background-color: #F6752B;
+}
+ 
+ .fundoBranco{
+ 	background-color: white;
+ }
+ 
+ .login-logo-custom{
+ 	margin-bottom: 0px;
+ 	background: #F6752B;
+ }
+ 
+ .btn-custom-color{
+ 	background: #F6752B;
+ 	color: white;
+ }
+ 
+ .btn-app-table{
+ 	height: 33px;
+ 	min-width: 20px;
+ 	padding: 5px 5px;
+ 	margin: 0 0 0 10px;
+ }
+ 
+ 
+ .columnCenter{
+ 	text-align: center;
+ }
+ .columnHidden{
+ 	display: none;
+ }
+ .columnId{
+ 	min-width: 50px; 
+ 	width: 10%;
+ 	text-align: center;
+ }
+ .columnDesc{
+ 	min-width: 350px; 
+ 	width: 40%;
+ }
+ .columnDescMin{
+ 	min-width: 150px; 
+ 	width: 40%;
+ }
+ .columnDate{
+ 	min-width: 120px; 
+ 	width: 20%;
+ 	text-align: center;
+ }
+ .columnButton{
+ 	min-width: 80px; 
+ 	width: 10%;
+ 	text-align: center;
+ }
+ .columnButtonOnlyDesktop{
+ 	min-width: 80px; 
+ 	width: 10%;
+ 	text-align: center;
+ }
+ 
+.dialogsCustom{
+	z-index: 1004;
+}
+
+.iconInput.input-group-addon{
+	padding: 0px;
+	width: 30px;
+}
+
+ .messagesJsf{
+ 	color:red;
+ 	font-size: 9pt;
+ }
+
+.kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.kv-avatar .file-input {
+    display: table-cell;
+    max-width: 220px;
+}
+
+ 
+.dialogsCustom{
+	z-index: 1004;
+}
+
+@media (max-width: 767px) {
+ 	#panelFileView{display: none;}
+ 	.columnButtonOnlyDesktop{display: none;}
+ }
