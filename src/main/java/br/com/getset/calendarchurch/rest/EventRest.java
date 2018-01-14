@@ -22,7 +22,7 @@ public class EventRest{
 	@GET
 	@Produces("application/json")
 	public GroupNotifications atualizaIpRetornaChave(){
-		return eService.getAllEvents();
+		return eService.getEventsShow();
 		//return Response.status(201).entity(chave).build();
 	}
 }

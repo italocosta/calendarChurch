@@ -41,6 +41,13 @@ public class EventDao implements Serializable{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Event> findOnlyShow(){
+		return entityManager.createQuery("FROM "+Event.class.getName()+" e where e.flShow = :s")
+				.setParameter("s", true)
+				.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Event> findByDate(Integer month, Integer year){
 		return entityManager.createQuery("FROM "+Event.class.getName()+" e where year(e.dtStart) = :y and month(e.dtStart) = :m order by e.dtStart")
 				.setParameter("y", year)

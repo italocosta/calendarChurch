@@ -19,6 +19,11 @@ public class EventService implements Serializable{
 		return gp;
 	}
 	
+	public GroupNotifications getEventsShow(){
+		GroupNotifications gp = new GroupNotifications(eDao.findOnlyShow(),"Evento");
+		return gp;
+	}
+	
 	public EventDao geteDao() {
 		return eDao;
 	}
