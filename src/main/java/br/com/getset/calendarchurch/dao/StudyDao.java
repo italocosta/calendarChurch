@@ -47,6 +47,11 @@ public class StudyDao implements Serializable{
 	@SuppressWarnings("unchecked")
 	public List<Study> findAllRest(){
 		return entityManager.createQuery("FROM "+Study.class.getName()
+				+" s where s.flShow = true").getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Study> findCellRest(){
+		return entityManager.createQuery("FROM "+Study.class.getName()
 				+" s where s.flShow = true and tpStudy = "+TypeStudy.CELULA.getTipo()).getResultList();
 	}
 	

@@ -46,6 +46,10 @@ public class StudyMB implements Serializable{
 	}
 	
 	
+	public String goPage() {
+		return "estudo?faces-redirect=true"; 
+	}
+	
 	public void preparNewStudy(){
 		newStudy = new Study();
 		newStudy.setDtStudy(Calendar.getInstance());

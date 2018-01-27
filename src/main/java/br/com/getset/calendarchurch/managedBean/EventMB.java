@@ -41,6 +41,10 @@ public class EventMB implements Serializable{
 	}
 	
 	
+	public String goPage() {
+		return "index?faces-redirect=true";
+	}
+	
 	public void preparNewEvent(){
 		newEvent = new Event();
 		newEvent.setDtStart(Calendar.getInstance());

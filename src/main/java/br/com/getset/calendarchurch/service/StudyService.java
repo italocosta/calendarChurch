@@ -19,6 +19,10 @@ public class StudyService implements Serializable{
 		GroupStudies gp = new GroupStudies(sDao.findAllRest());
 		return gp;
 	}
+	public GroupStudies getStudiesCell(){
+		GroupStudies gp = new GroupStudies(sDao.findCellRest());
+		return gp;
+	}
 	public ContentStudy getStudyContent(Long id){
 		return new ContentStudy(sDao.getContent(id));
 	}

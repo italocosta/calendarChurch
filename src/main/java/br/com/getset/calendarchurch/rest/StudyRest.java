@@ -24,6 +24,12 @@ public class StudyRest{
 	@GET
 	@Produces("application/json")
 	public GroupStudies getStudies(){
+		return sService.getStudiesCell();
+	}
+	@GET
+	@Path("/all")
+	@Produces("application/json")
+	public GroupStudies getStudiesAll(){
 		return sService.getAllStudies();
 	}
 	
