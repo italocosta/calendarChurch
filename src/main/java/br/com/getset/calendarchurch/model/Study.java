@@ -24,10 +24,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="study")
 public class Study implements Serializable{
 	
-	@XmlElement(name = "idStudy")
+	@XmlElement(name = "id")
 	@Id
-	@Column(name = "id_study")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@XmlElement(name = "idStudy")
+	@Column(name = "id_study")
 	private Long idStudy;
 	
 	@XmlElement(name = "title")
@@ -150,6 +154,14 @@ public class Study implements Serializable{
 	@Override
 	public String toString() {
 		return dsTitle;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
