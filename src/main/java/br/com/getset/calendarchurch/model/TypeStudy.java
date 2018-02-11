@@ -2,8 +2,8 @@ package br.com.getset.calendarchurch.model;
 
 public enum TypeStudy {
 	DOZE(0,"12"),
-	CELULA(1,"Célula"),
-	CRIANCA(2,"Criança");
+	CELULA(1,"CÃ©lula"),
+	CRIANCA(2,"CrianÃ§a");
 	
 	private int tipo;
 	private String desc;
