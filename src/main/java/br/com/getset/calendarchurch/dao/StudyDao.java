@@ -1,6 +1,7 @@
 package br.com.getset.calendarchurch.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,15 +47,28 @@ public class StudyDao implements Serializable {
 		return entityManager.createQuery("FROM " + Study.class.getName()).getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Study> findAllRest() {
-		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true").getResultList();
+		List<Study> listStudies = new ArrayList<Study>();
+		listStudies.addAll(findCellRest().subList(0, 5));
+		listStudies.addAll(find12Rest().subList(0, 5));
+		listStudies.addAll(findChildRest().subList(0, 5));
+		return listStudies;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Study> findCellRest() {
 		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
 				+ TypeStudy.CELULA.getTipo()).getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Study> find12Rest() {
+		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
+				+ TypeStudy.DOZE.getTipo()).getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Study> findChildRest() {
+		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
+				+ TypeStudy.CRIANCA.getTipo()).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")

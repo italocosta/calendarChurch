@@ -1,6 +1,7 @@
 package br.com.getset.calendarchurch.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 
