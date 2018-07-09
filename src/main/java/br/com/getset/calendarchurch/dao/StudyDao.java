@@ -49,29 +49,26 @@ public class StudyDao implements Serializable {
 
 	public List<Study> findAllRest() {
 		List<Study> listStudies = new ArrayList<Study>();
-		List<Study> listAux = findCellRest();
-		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
-		listAux = find12Rest();
-		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
-		listAux = findChildRest();
-		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
+		listStudies.addAll(findCellRest().subList(0, 5));
+		listStudies.addAll(find12Rest().subList(0, 5));
+		listStudies.addAll(findChildRest().subList(0, 5));
 		return listStudies;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Study> findCellRest() {
 		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
-				+ TypeStudy.CELULA.getTipo()).getResultList();
+				+ TypeStudy.CELULA.getTipo() + "ORDER BY dtStudy DESC").getResultList();
 	}
 	@SuppressWarnings("unchecked")
 	public List<Study> find12Rest() {
 		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
-				+ TypeStudy.DOZE.getTipo()).getResultList();
+				+ TypeStudy.DOZE.getTipo() + "ORDER BY dtStudy DESC").getResultList();
 	}
 	@SuppressWarnings("unchecked")
 	public List<Study> findChildRest() {
 		return entityManager.createQuery("FROM " + Study.class.getName() + " s where s.flShow = true and tpStudy = "
-				+ TypeStudy.CRIANCA.getTipo()).getResultList();
+				+ TypeStudy.CRIANCA.getTipo() + "ORDER BY dtStudy DESC").getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
