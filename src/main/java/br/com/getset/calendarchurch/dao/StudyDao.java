@@ -49,9 +49,12 @@ public class StudyDao implements Serializable {
 
 	public List<Study> findAllRest() {
 		List<Study> listStudies = new ArrayList<Study>();
-		listStudies.addAll(findCellRest().subList(0, 5));
-		listStudies.addAll(find12Rest().subList(0, 5));
-		listStudies.addAll(findChildRest().subList(0, 5));
+		List<Study> listAux = findCellRest();
+		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
+		listAux = find12Rest();
+		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
+		listAux = findChildRest();
+		listStudies.addAll(listAux.subList(listAux.size()-6, 5));
 		return listStudies;
 	}
 
