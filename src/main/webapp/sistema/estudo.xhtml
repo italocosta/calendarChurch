@@ -60,9 +60,9 @@
 									</div>
 									<h:selectOneMenu id="ano" value="#{studyMB.year}"
 										styleClass="form-control">
-										<f:selectItem itemLabel="2016" itemValue="2016" />
-										<f:selectItem itemLabel="2017" itemValue="2017" />
 										<f:selectItem itemLabel="2018" itemValue="2018" />
+										<f:selectItem itemLabel="2019" itemValue="2019" />
+										<f:selectItem itemLabel="2020" itemValue="2020" />
 										<f:ajax event="change" render="tabela" execute="@form"
 											listener="#{studyMB.searchStudys()}" />
 									</h:selectOneMenu>
